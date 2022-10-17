@@ -1,6 +1,6 @@
 <template>
     <div class="input-wrap">
-        <label>{{label}}</label>
+        <label>{{labelText}}</label>
         <textarea
         v-if="isMultiLine"
         :value="modelValue"

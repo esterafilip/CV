@@ -1,11 +1,15 @@
 <script setup lang="ts">
-
+defineProps({
+    msg: {
+        type: String,
+        default: ""
+    }
+})
 </script>
 
 <template>
     <div class="wrapper-buttons">
-        <button class="button" type="submit">Submit</button>
-        <button class="button" type="reset">Reset</button>
+        <button class="button" type="submit">{{msg}}</button>
     </div>
 </template>
 
@@ -16,6 +20,7 @@
     align-items: baseline;
     gap: 10rem;
 }
+
 .button {
     background-color: rgb(12, 85, 61);
     width: 6rem;
@@ -28,7 +33,8 @@
     font-size: 16px;
     margin: 4px 2px;
 }
-.button:hover{
+
+.button:hover {
     background-color: green;
 }
 </style>

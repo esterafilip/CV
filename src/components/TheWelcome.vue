@@ -6,15 +6,27 @@ import IconLanguage from "./icons/IconLanguage.vue";
 import IconAboutMe from "./icons/IconAboutMe.vue";
 import IconLicenceCert from "./icons/IconLicenceCert.vue";
 import InputComponent from "./InputComponent.vue";
-import { ref } from "vue";
+import { reactive, ref, computed } from "vue";
 
-const initialState = {
-  about: "",
-  work: "",
-  education: "",
-  languages: "",
-  licence: ""
-};
+const emit = defineEmits(["update:modelValue"]);
+const props = defineProps({
+  modelValue: {
+    type: Object,
+    default: {
+      about: "",
+      work: "",
+      education: "",
+      languages: "",
+      licence: ""
+    }
+  }
+});
+
+const resumeData = computed(() => props.modelValue);
+function onChange(event: Event) {
+  emit("update:modelValue", resumeData);
+  console.log("emitted update:modelValue in TheWelcome")
+}
 </script>
 
 <template>
@@ -22,44 +34,40 @@ const initialState = {
     <template #icon>
       <IconAboutMe />
     </template>
-    <template #heading>About me</template>
-    
-    <InputComponent v-model="about" />
+
+    <InputComponent @change="onChange" v-model="resumeData.about" label="About" :multiline="true" />
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <IconExperience />
     </template>
-    <template #heading>Work experience*</template> 
 
-    <InputComponent v-model="work" />
+    <InputComponent @change="onChange" v-model="resumeData.work" label="Work" :multiline="true" :mandatory="true" />
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <IconEducation />
     </template>
-    <template #heading>Education*</template>
-    
-    <InputComponent v-model="education" />
+
+    <InputComponent @change="onChange" v-model="resumeData.education" label="Education" :multiline="true"
+      :mandatory="true" />
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <IconLanguage />
     </template>
-    <template #heading>Languages</template>
-    
-    <InputComponent v-model="languages" />
+
+    <InputComponent @change="onChange" v-model="resumeData.languages" label="Languages" :multiline="true" />
   </WelcomeItem>
 
   <WelcomeItem>
     <template #icon>
       <IconLicenceCert />
     </template>
-    <template #heading>Licenses & certifications</template>
-    
-    <InputComponent v-model="licence" />
+
+    <InputComponent @change="onChange" v-model="resumeData.licence" label="Licenses" :multiline="true" />
   </WelcomeItem>
 </template>

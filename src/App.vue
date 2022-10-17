@@ -1,13 +1,72 @@
 <script setup lang="ts">
 import Side from "./components/Side.vue"
 import Content from "./components/Content.vue";
+import ButtonComponent from "./components/ButtonComponent.vue";
+
+import { reactive } from "vue";
+
+const initialState = {
+  side: {
+    imageUrl: "",
+    information: {
+      fullname: "",
+      currentpos: "",
+      phone: "",
+      mail: "",
+      linkedin: "",
+      github: "",
+      profskill: "",
+      techskill: ""
+    }
+  },
+  content: {
+    about: "",
+    work: "",
+    education: "",
+    languages: "",
+    licence: ""
+  }
+}
+
+const stateData = reactive({ ...initialState });
+
+function reset() {
+  Object.assign(stateData, initialState);
+}
+
+// *********************************************************************
+//
+//       function validate() {
+//         return resumeData.name != "" && resumeData.education != "";
+//       }
+//
+// *********************************************************************
+
+
+function validate() {
+  return true
+}
+
+function submit() {
+  if (validate()) {
+    alert("Sucessfully submitted")
+    reset()
+  } else {
+    alert("Not all mandatory fields are filled!")
+  }
+}
+
 </script>
 
 <template>
   <header>
     <div class="grid-container">
-      <Side/>
-      <Content/>
+      <Side v-model="stateData.side" />
+      <Content v-model="stateData.content" />
+      <div class="button-wrapper">
+        <ButtonComponent msg="Submit" @click="submit" />
+        <ButtonComponent msg="Reset" @click="reset" />
+      </div>
     </div>
   </header>
 </template>
@@ -15,6 +74,12 @@ import Content from "./components/Content.vue";
 <style scoped>
 header {
   line-height: 1.5;
+}
+
+.button-wrapper {
+  display: flex;
+  grid-area: 'content';
+  flex-direction: row;
 }
 
 nav {

@@ -1,16 +1,24 @@
 <template>
     <div class="wrapper-upload">
         <h3>Choose a profile image</h3>
-        <img alt="" :src="imageSrc" width="150" height="150" />
-        <input id="hiddenInput" type="file" placeholder="Browse" @change="onFileSelected" style="display: none" />
+        <img alt="" :src="imageUrl" width="150" height="150" />
+        <input id="hiddenInput" type="file" @change="onFileSelected" style="display: none" />
         <button @click="onBrowse">Browse...</button>
     </div>
 </template>
   
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
-const imageSrc = ref();
+const emit = defineEmits(["update:modelValue"]);
+const props = defineProps({
+    modelValue: {
+        type: String,
+        default: "",
+    },
+});
+
+const imageUrl = computed(() => props.modelValue);
 
 function onBrowse() {
     document.getElementById("hiddenInput")?.click();
@@ -22,8 +30,7 @@ function onFileSelected(event: Event) {
 
     if (!files || !files[0]) return;
 
-    imageSrc.value = URL.createObjectURL(files[0]);
-    console.log(imageSrc);
+    emit("update:modelValue", URL.createObjectURL(files[0]));
 }
 </script>
   
@@ -35,9 +42,11 @@ function onFileSelected(event: Event) {
     gap: 20px;
     align-items: center;
 }
-button{
+
+button {
     width: 6rem;
 }
+
 img {
     border-radius: 50%;
     border: 7px solid rgb(111, 120, 43);
